@@ -6,10 +6,10 @@ from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import time
 
-DB_NAME = "testdedb"
-DB_USER = "postgres"
-DB_PASSWORD = "Kjimmy07."
-DB_HOST = "172.24.16.1"
+DB_NAME = "database_name"
+DB_USER = "username"
+DB_PASSWORD = "password"
+DB_HOST = "wsl host on windows"
 DB_PORT = "5432"
 
 default_args = {
