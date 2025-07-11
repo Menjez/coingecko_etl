@@ -5,14 +5,14 @@ def transform_injury_data(html):
         print("No html")
         return {}
 
-    soup = BeautifulSoup(html, 'html.parser')
-    table = soup.find('table', class_='injury-table injury-table-full')
+    table = html.find('table', class_='injury-table injury-table-full')
     if not table:
         print("Injury table not found.")
         return {}
 
     rows = table.find_all('tr')
     
+    print("done")
     return clean_and_extract(rows)
 
 def clean_and_extract(rows):
@@ -56,15 +56,27 @@ def extract_player_injury(row):
     if len(cells) < 6:
         return None  # Guard in case layout is incomplete
 
-    return {
-        "Player": clean_text(cells[0].get_text()),
-        "Reason": clean_text(cells[1].get_text()),
-        "Further Detail": clean_text(cells[2].get_text()),
-        "Potential Return": clean_text(cells[3].get_text()),
-        "Condition": clean_text(cells[4].get_text()),
-        "Status": clean_text(cells[5].get_text())
-    }
+    def strip_prefix(text, prefix):
+        if text.startswith(prefix) and len(text) > len(prefix):
+            return text[len(prefix):].strip()
+        return text
 
+    # Clean each cell and remove field prefixes
+    player = strip_prefix(clean_text(cells[0].get_text()), "Player")
+    reason = strip_prefix(clean_text(cells[1].get_text()), "Reason")
+    detail = strip_prefix(clean_text(cells[2].get_text()), "Further Detail")
+    return_date = strip_prefix(clean_text(cells[3].get_text()), "Potential Return")
+    condition = strip_prefix(clean_text(cells[4].get_text()), "Condition")
+    status = strip_prefix(clean_text(cells[5].get_text()), "Status")
+
+    return {
+        "Player": player,
+        "Reason": reason,
+        "Further Detail": detail,
+        "Potential Return": return_date,
+        "Condition": condition,
+        "Status": status
+    }
 
 def clean_text(text):
     return ' '.join(text.strip().split()) if text else ''
