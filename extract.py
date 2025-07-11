@@ -4,9 +4,9 @@ import csv
 
 def scrape_injury_data():
     payload = {
-        'api_key': '4d5beac65e4f04562a0826c3ac4bc6d1',
+        'api_key': 'your_api_key',
         'url': 'https://www.premierinjuries.com/injury-table.php',
-        'render': 'true'  # important for JS-heavy Cloudflare pages
+        'render': 'true' 
     }
 
     response = requests.get('https://api.scraperapi.com/', params=payload)
